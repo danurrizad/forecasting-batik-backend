@@ -3,9 +3,6 @@ from statsmodels.tsa.api import SimpleExpSmoothing
 from flask_cors import CORS, cross_origin
 import pandas as pd
 import os
-import requests
-import re
-from io import StringIO
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/predict": {"origins": "http://localhost:5173", "origins": "https://batik-management-system.netlify.app"}})

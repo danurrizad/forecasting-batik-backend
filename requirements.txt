@@ -2,4 +2,3 @@ flask
 statsmodels
 pandas
 flask_cors
-requests
