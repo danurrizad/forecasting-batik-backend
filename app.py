@@ -11,7 +11,7 @@ CORS(app, resources={r"/api/predict": {"origins": "http://localhost:5173", "orig
 UPLOAD_FOLDER = 'files/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     return "Forecasting batik method"
 
