@@ -28,27 +28,30 @@ def predict():
 
         # Membaca file CSV yang diunggah
         uploaded_data = pd.read_csv(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
-        uploaded_data['date'] = pd.to_datetime(uploaded_data['date'], format='%Y-%m')
-        uploaded_data = uploaded_data.set_index('date')
-        files.save(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
-        
-        # Create a model based on the uploaded data
-        model = SimpleExpSmoothing(uploaded_data).fit(smoothing_level=0.8, optimized=False)
+        if uploaded_data['date']:
+            uploaded_data['date'] = pd.to_datetime(uploaded_data['date'], format='%Y-%m')
+            uploaded_data = uploaded_data.set_index('date')
+            files.save(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
+            
+            # Create a model based on the uploaded data
+            model = SimpleExpSmoothing(uploaded_data).fit(smoothing_level=0.8, optimized=False)
 
-        # Perform prediction using the model
-        forecast = model.forecast(steps=1)
+            # Perform prediction using the model
+            forecast = model.forecast(steps=1)
 
-        # Add labels for each forecasted month
-        forecast_dates = pd.date_range(start=uploaded_data.index[-1], periods=1 + 1, freq='M')[1:]
-        forecast.index = forecast_dates
+            # Add labels for each forecasted month
+            forecast_dates = pd.date_range(start=uploaded_data.index[-1], periods=1 + 1, freq='M')[1:]
+            forecast.index = forecast_dates
 
-        # Create a DataFrame with the forecast and month labels
-        forecast_df = pd.DataFrame({'month': forecast.index.strftime('%B %Y'), 'forecast': forecast})
+            # Create a DataFrame with the forecast and month labels
+            forecast_df = pd.DataFrame({'month': forecast.index.strftime('%B %Y'), 'forecast': forecast})
 
-        # Convert the DataFrame to a JSON response
-        response = forecast_df.to_json(orient='records')
+            # Convert the DataFrame to a JSON response
+            response = forecast_df.to_json(orient='records')
 
-        return response
+            return response
+        else:
+            "This csv file doesn't contain 'date' header"
 
     # If no file is included, return an appropriate response
     else:
