@@ -25,6 +25,7 @@ def predict():
         
         # print("file pada /predict: ", uploaded_file)
         files = request.files['file']
+        files.save(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
 
         # Membaca file CSV yang diunggah
         uploaded_data = pd.read_csv(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
