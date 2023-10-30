@@ -51,7 +51,8 @@ def predict():
 
             return response
         else:
-            "This csv file doesn't contain 'date' header"
+             print("File csv tidak memiliki header 'date'")
+             return jsonify("File csv tidak memiliki header 'date'")
 
     # If no file is included, return an appropriate response
     else:
