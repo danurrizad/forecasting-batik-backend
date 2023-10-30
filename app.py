@@ -28,7 +28,7 @@ def predict():
 
         # Membaca file CSV yang diunggah
         uploaded_data = pd.read_csv(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
-        if uploaded_data['date']:
+        if 'date' in uploaded_data:
             uploaded_data['date'] = pd.to_datetime(uploaded_data['date'], format='%Y-%m')
             uploaded_data = uploaded_data.set_index('date')
             files.save(os.path.join(app.config['UPLOAD_FOLDER'], files.filename))
